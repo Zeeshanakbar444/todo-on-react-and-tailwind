@@ -51,13 +51,13 @@ function App() {
         <div className='w-[70%]'>
           <input type="text"
             value={todoValue}
-            className='w-full rounded-lg p-3 outline   border-red-600'
+            className='w-full rounded-lg p-3 outline    border-red-600'
             onChange={(e) => setTodoValue(e.target.value)}
           />
         </div>
         <div className='flex mt-5'>
           <Button title="ADD " funHeandler={addTodo} />
-          <Button title="Delete All " customCOl='bg-[red]' funHeandler={deleteAll} />
+          <Button title="Delete All " customCol='bg-rose-600' funHeandler={deleteAll} />
 
         </div>
       </div>
@@ -70,7 +70,7 @@ function App() {
               <li className='text-xl  p-3 flex justify-between items-center mt-2' key={ind}>{val}
                 <div>
                   <Button title="Edit" funHeandler={editTodo} />
-                  <Button title="Delete" customCOl='bg-[red]' funHeandler={() => deleteTodo(ind)} />
+                  <Button title="Delete" customCol='bg-rose-600' funHeandler={() => deleteTodo(ind)} />
                 </div>
               </li>
             )
