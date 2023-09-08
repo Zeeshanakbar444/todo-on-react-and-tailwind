@@ -5,9 +5,10 @@ import Button from './component/Button'
 import Header from './component/Header'
 
 function App() {
-  const [todoValue, setTodoValue] = useState("");
-  const [todos, setTodos] = useState([]);
-  console.log(todos)
+  let [todoValue, setTodoValue] = useState("");
+  let [todos, setTodos] = useState([]);
+  let [todoEditValue, setTodoEditValue] = useState('')
+
 
 
   function addTodo() {
@@ -16,10 +17,14 @@ function App() {
       alert("fill the required field")
       return
     } else {
-      console.log(todoValue)
-      // todos.push(todoValue)
-      // setTodos([...todos])
-      setTodos([todoValue, ...todos])
+      // console.log(todoValue)
+      let obj = {
+        value: todoValue,
+        isEdit: false
+      }
+      todos.push(obj)
+      setTodos([...todos])
+
       setTodoValue("")
 
     }
@@ -31,19 +36,26 @@ function App() {
 
   }
 
-  function editTodo() {
-    console.log("editTodo")
-  }
   function deleteTodo(id) {
-    console.log("deleteTodo")
-
-    let deleteTodo = todos.filter((val, index) => {
-      return id !== index
-    })
-    setTodos(deleteTodo)
+    todos.splice(id, 1)
+    setTodos([...todos])
+  }
+  function editTodo(ind) {
+    todos.forEach(ele => {
+      ele.isEdit = false
+    });
+    todos[ind].isEdit = true
+    setTodos([...todos])
+    setTodoEditValue(todos[ind].value);
   }
 
 
+  function saveTodoValue(id) {
+    
+    todos[id].value = todoEditValue;
+    todos[id].isEdit = false;
+    setTodos([...todos]);
+  }
   return (
     <>
       <Header />
@@ -65,16 +77,31 @@ function App() {
 
       <div className=' w-[70%] mx-auto mt-6'>
         <ul>
-          {todos.map((val, ind) => {
-            return (
-              <li className='text-xl  p-3 flex justify-between items-center mt-2' key={ind}>{val}
-                <div>
-                  <Button title="Edit" funHeandler={editTodo} />
-                  <Button title="Delete" customCol='bg-rose-600' funHeandler={() => deleteTodo(ind)} />
-                </div>
-              </li>
-            )
-          })}
+          {
+          todos && todos &&
+          todos?.map((val, ind) => {
+            return val.isEdit ? (<div className="flex  mx-auto" key={ind}>
+              <input
+                type="text"
+                className="border w-full rounded-lg p-3 outline-none border-gray-600 "
+                value={todoEditValue || " "}
+                onChange={(e) => setTodoEditValue(e.target.value)}
+              />
+              <Button
+                title="Save"
+                funHeandler={() => saveTodoValue(ind)}
+              />
+            </div>):
+              (
+                <li className='text-xl  p-3 flex justify-between items-center mt-2' key={ind}>{val.value}
+                  <div>
+                    <Button title="Edit" funHeandler={() => editTodo(ind)} />
+                    <Button title="Delete" customCol='bg-rose-600' funHeandler={() => deleteTodo(ind)} />
+                  </div>
+                </li>
+              )
+          })
+          }
 
         </ul>
       </div>
